@@ -1,0 +1,80 @@
+/* Styles for the container holding the forms */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+/* Styles for the form */
+.form {
+    width: 300px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Styles for form inputs */
+.form input[type="text"],
+.form input[type="password"],
+.form button {
+    width: 90%;
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+/* Styles for the submit button */
+.form button, .update-button, .delete-button, .view-button {
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+}
+
+/* Styles for the link to switch between login and signup */
+.switch-link {
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* Additional styles for the link */
+.switch-link button {
+    text-decoration: none;
+    color: #007bff;
+}
+
+/* Styles for headings */
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.styled-table {
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 12px 15px;
+    text-align: left;
+}
+
+.styled-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    color: #333;
+    border-bottom: 2px solid #ddd;
+}
+
+.delete-button{
+    background-color: red;
+}
+.view-button{
+    background-color: yellowgreen;
+}
