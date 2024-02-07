@@ -2,13 +2,15 @@ import React, {useContext, useState} from 'react';
 import './styles.css';
 // import EmployeeContext from '../context/EmployeeContext';
 import axios from 'axios'
+import LoginContext from "../context/LoginContext";
 
 function Signup() {
-    // const {email, setEmail, username, setUsername, password, setPassword, setRegistered}=useContext(EmployeeContext)
+    const {count, setCount}=useContext(LoginContext)
     const [username, setUsername]=useState('')
     const [firstname, setFirstname]=useState('')
     const [lastname, setLastname]=useState('')
     const [password, setPassword]=useState('')
+    // const [count, setCount]=useState(0)
     return (
         <div className="container">
             <h1>Signup</h1>
@@ -60,7 +62,10 @@ function Signup() {
             </div>
             <div className="switch-link">
                 <button
-                    // onClick={(event)=>{event.preventDefault(); setRegistered(true)}}
+                    onClick={(event)=>{event.preventDefault();
+                        localStorage.setItem('loginPage', 'true')
+                        setCount(count+1)
+                    }}
                 >Go to login page</button>
             </div>
         </div>
