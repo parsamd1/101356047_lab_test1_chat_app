@@ -65,7 +65,7 @@ function GroupMessage() {
         })
         return(
             <div className="container">
-                <h1>Chat Box</h1>
+                <h1>Chat Box {room}</h1>
                 <form className='form'>
 
                     <div id='write_here' style={{paddingBottom: '25px'}}></div>
