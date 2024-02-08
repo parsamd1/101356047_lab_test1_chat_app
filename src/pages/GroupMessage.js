@@ -3,8 +3,16 @@ import './styles.css';
 import axios from "axios";
 import LoginContext from "../context/LoginContext";
 import GroupMessageModel from '../models/GroupMessageModel'
+import {io} from "socket.io-client";
+import socket from "../IOClient";
+// import socket from "../IOClient";
+
 
 function GroupMessage() {
+
+    const chatSection = io('http://localhost:8081');
+
+
     const {count, setCount}=useContext(LoginContext)
     const username=localStorage.getItem('username')
     let [room, setRoom]=useState('')
@@ -16,6 +24,10 @@ function GroupMessage() {
 
     useEffect( ()=>{
         console.log('GroupMessage rendered')
+
+        chatSection.on('connect', '')
+        chatSection.on('welcome message', data=>alert(data))
+        chatSection.emit('username', username)
 
         axios.post('http://localhost:8081/chatinfo', {"room":room})
             .then((res)=>{
@@ -31,9 +43,6 @@ function GroupMessage() {
             })
 
     }, [room])
-    function connection(){
-
-    }
 
     function reformat_time(date) {
         // Get the current timestamp in milliseconds
@@ -56,43 +65,58 @@ function GroupMessage() {
         })
         return(
             <div className="container">
-            <h1>Chat Box</h1>
-            <form className='form'>
+                <h1>Chat Box</h1>
+                <form className='form'>
 
-                <div id='write_here' style={{paddingBottom:'25px'}}></div>
+                    <div id='write_here' style={{paddingBottom: '25px'}}></div>
 
-                <div>
-                    <label>{username}: </label>
-                    <input type='text' placeholder='Write something...'
-                    onChange={(event)=>{event.preventDefault(); temp2=event.target.value}}
-                    />
-                </div>
+                    <div>
+                        <label>{username}: </label>
+                        <input type='text' placeholder='Write something...'
+                               onChange={(event) => {
+                                   event.preventDefault();
+                                   temp2 = event.target.value
+                               }}
+                        />
+                    </div>
 
-                <button onClick={async (event)=>{event.preventDefault();
-                    const newObj_group_msg=new GroupMessageModel({
-                        from_user:username,
-                        room:room,
-                        message:temp2,
-                        date_sent:Date.now()
-                    })
-                    await axios.post('http://localhost:8081/chat', newObj_group_msg)
-                        .then(res=>{
-                            console.log(res.data)
-                            document.getElementById('write_here').innerHTML+=username+': '+temp2+'   '+reformat_time(Date.now())+'<br>'
+                    <button onClick={async (event) => {
+                        event.preventDefault();
+                        const newObj_group_msg = new GroupMessageModel({
+                            from_user: username,
+                            room: room,
+                            message: temp2,
+                            date_sent: Date.now()
                         })
-                        .catch(e=>{console.log(e)
-                        alert(e)})
+                        await axios.post('http://localhost:8081/chat', newObj_group_msg)
+                            .then(res => {
+                                console.log(res.data)
+                                document.getElementById('write_here').innerHTML += username + ': ' + temp2 + '   ' + reformat_time(Date.now()) + '<br>'
+                                chatSection.emit('message sent', `user ${username} said: ${temp2}`)
+                            })
+                            .catch(e => {
+                                console.log(e)
+                                alert(e)
+                            })
 
-                }}>Post</button>
+                    }}>Post
+                    </button>
+
+                    <button onClick={(event) => {
+                        event.preventDefault();
+                        setRoom('')
+                        setCount(count + 1)
+                    }}>leave room
+                    </button>
+
+                </form>
 
                 <button onClick={(event) => {
                     event.preventDefault();
-                    setRoom('')
+                    localStorage.removeItem('username')
                     setCount(count + 1)
-                }}>leave room
+                }}>Log Out
                 </button>
-
-            </form>
 
             </div>
         )
@@ -103,7 +127,7 @@ function GroupMessage() {
             <div className="container">
                 <h1>Chat Room</h1>
                 <form className='form'>
-                    <select id="room" name="room"
+                <select id="room" name="room"
                             onChange={(event) => {
                                 event.preventDefault()
                                 temp=event.target.value
@@ -119,11 +143,17 @@ function GroupMessage() {
                     </select>
                     <button onClick={(event) => {
                         event.preventDefault();
+                        chatSection.emit('room joined', username+` joined room ${temp}`)
                         setRoom(temp)
                         setCount(count + 1)
                     }}>Join room</button>
 
                 </form>
+
+                <button onClick={(event)=>{event.preventDefault();
+                localStorage.removeItem('username')
+                    setCount(count+1)
+                }}>Log Out</button>
 
             </div>
         )
