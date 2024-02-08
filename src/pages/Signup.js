@@ -1,6 +1,5 @@
 import React, {useContext, useState} from 'react';
 import './styles.css';
-// import EmployeeContext from '../context/EmployeeContext';
 import axios from 'axios'
 import LoginContext from "../context/LoginContext";
 

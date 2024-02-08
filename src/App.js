@@ -4,6 +4,8 @@ import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import {useState} from "react";
 import LoginContext from "../src/context/LoginContext"
+import GroupMessage from "./pages/GroupMessage";
+
 
 function App() {
     const [count, setCount]=useState(0)
@@ -21,6 +23,10 @@ function App() {
         }
         else if(checkForLocalItem() == null && loginPage() === 'true'){
             return (<Login></Login>)
+        }
+        else {
+            console.log('group message reached')
+            return (<GroupMessage></GroupMessage>)
         }
     }
   return (

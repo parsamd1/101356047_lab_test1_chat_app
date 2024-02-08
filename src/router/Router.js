@@ -1,6 +1,7 @@
 const express = require('express');
 const userModel = require('../models/User');
 const app = express();
+const GroupMessageModel=require('../models/GroupMessageModel')
 
 
 // backend hadnling of user signing up
@@ -38,5 +39,29 @@ app.post('/login', async (req, res)=>{
     }
 
 })
+
+app.post('/chat', async (req, res)=>{
+    const newObj_group_msg=new GroupMessageModel({...req.body})
+    await newObj_group_msg.save()
+        .then(()=>{
+            console.log('message saved')
+            res.status(200).send(newObj_group_msg)
+        })
+        .catch((e)=>{
+            console.log(e)
+        })
+})
+
+app.post('/chatinfo', (req, res)=>{
+    GroupMessageModel.find({room:req.body.room})
+        .then((list)=>{
+            res.status(200).send(list)
+        })
+        .catch(e=>{console.log(e)})
+
+})
+
+
+
 
 module.exports=app

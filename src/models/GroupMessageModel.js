@@ -15,5 +15,5 @@ const groupMessageSchema=new mongoose.Schema({
     }
 })
 
-const GroupMessage=mongoose.model('GroupMessage', groupMessageSchema)
-module.exports=GroupMessage
+const GroupMessageModel=mongoose.model('groupMessage', groupMessageSchema)
+module.exports=GroupMessageModel

@@ -2,6 +2,8 @@ import React, {useContext, useEffect, useState} from 'react';
 import './styles.css';
 import axios from "axios";
 import LoginContext from "../context/LoginContext";
+// import { redirect } from 'react-router-dom';
+
 
 function Login() {
     const [username, setUsername]=useState('')
@@ -31,6 +33,7 @@ function Login() {
                             console.log(res.data);
                             alert(res.data)
                             localStorage.setItem('username', username)
+                            // return redirect('http://localhost:8081/chat')
                             setCount(count+1)
 
                         }).catch(e => {
